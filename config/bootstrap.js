@@ -37,7 +37,15 @@ module.exports.bootstrap = cb => {
       },
       // OK.
       success: foundVideos => {
-        console.log('the foundVideos: ', foundVideos);
+        foundVideos.forEach(video => {
+          video.src = 'https://www.youtube.com/embed/' + video.id;
+          delete video.description;
+          delete video.publishedAt;
+          delete video.id;
+          delete video.url;
+        });
+
+        console.log(foundVideos);
         return cb();
       },
     });
