@@ -9,11 +9,11 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.bootstrap.html
  */
 
-module.exports.bootstrap = function(cb) {
+module.exports.bootstrap = cb => {
 
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  Video.count().exec(function(err, numVideos) {
+  Video.count().exec((err, numVideos) => {
     if (err) {
       return cb(err);
     }
@@ -22,7 +22,7 @@ module.exports.bootstrap = function(cb) {
       console.log('Number of video records: ', numVideos);
       return cb();
     }
-    var Youtube = require('machinepack-youtube');
+    const Youtube = require('machinepack-youtube');
 
     // List Youtube videos which match the specified search query.
     Youtube.searchVideos({
@@ -31,12 +31,12 @@ module.exports.bootstrap = function(cb) {
       limit: 15,
     }).exec({
       // An unexpected error occurred.
-      error: function(err) {
+      error: err => {
         console.log('an error: ', err);
         return cb(err);
       },
       // OK.
-      success: function(foundVideos) {
+      success: foundVideos => {
         console.log('the foundVideos: ', foundVideos);
         return cb();
       },
