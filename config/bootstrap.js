@@ -45,8 +45,14 @@ module.exports.bootstrap = cb => {
           delete video.url;
         });
 
-        console.log(foundVideos);
-        return cb();
+        Video.create(foundVideos).exec((err, videoRecordsCreated) => {
+          if (err) {
+            return cb(err);
+          }
+
+          console.log(videoRecordsCreated);
+          return cb();
+        });
       },
     });
   });
