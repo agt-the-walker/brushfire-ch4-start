@@ -20,10 +20,26 @@ module.exports.bootstrap = function(cb) {
 
     if (numVideos > 0) {
       console.log('Number of video records: ', numVideos);
-    } else {
-      console.log('There are no video records.');
+      return cb();
     }
+    var Youtube = require('machinepack-youtube');
 
-    return cb();
+    // List Youtube videos which match the specified search query.
+    Youtube.searchVideos({
+      query: 'grumpy cat',
+      apiKey: sails.config.google.apiKey,
+      limit: 15,
+    }).exec({
+      // An unexpected error occurred.
+      error: function(err) {
+        console.log('an error: ', err);
+        return cb(err);
+      },
+      // OK.
+      success: function(foundVideos) {
+        console.log('the foundVideos: ', foundVideos);
+        return cb();
+      },
+    });
   });
 };
